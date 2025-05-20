@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Resultado Sólides</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .perfil-bar {
+      display: flex;
+      height: 48px;
+      margin: 1.5rem 0 0.5rem 0;
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px #0001;
+      background: #f6f6fb;
+      position: relative;
+    }
+    .perfil-segment {
+      height: 100%;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .perfil-executor { background: #c1272d; }
+    .perfil-comunicador { background: #f9b233; }
+    .perfil-planejador { background: #009444; }
+    .perfil-analista { background: #2e3192; }
+    .perfil-dot {
+      width: 24px;
+      height: 24px;
+      background: #fff;
+      border-radius: 50%;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      box-shadow: 0 2px 8px #0002;
+    }
+    .perfil-labels {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 0.5rem;
+      background: #f6f6fb;
+      border-radius: 0 0 16px 16px;
+      padding-bottom: 1rem;
+    }
+    .perfil-label {
+      flex: 1;
+      text-align: center;
+      font-weight: bold;
+      font-size: 1.1rem;
+      color: #6b2498;
+    }
+    .perfil-executor-label { color: #c1272d; }
+    .perfil-comunicador-label { color: #f9b233; }
+    .perfil-planejador-label { color: #009444; }
+    .perfil-analista-label { color: #2e3192; }
+    .perfil-porcentagem {
+      font-size: 1.5rem;
+      font-weight: bold;
+      display: block;
+    }
+    .perfil-desc {
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: #6b2498;
+      margin-top: 0.2rem;
+    }
+    .indicador-bar {
+      background: #e6d7f2;
+      border-radius: 8px;
+      height: 16px;
+      margin: 0.2rem 0;
+      position: relative;
+      width: 100%;
+    }
+    .indicador-bar-inner {
+      background: #6b2498;
+      height: 100%;
+      border-radius: 8px;
+      position: absolute;
+      left: 0; top: 0;
+    }
+    .indicador-label { font-size: 0.95rem; margin-bottom: 0.1rem; }
+    .competencias-list { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 1rem; }
+    .competencia-item { background: #e6d7f2; border-radius: 8px; padding: 0.5rem 1rem; font-weight: bold; color: #6b2498; }
+    .center { text-align: center; }
+    .big { font-size: 2.2rem; font-weight: bold; }
+    .sub { font-size: 1.2rem; color: #6b2498; }
+    .indicadores-table { width: 100%; max-width: 600px; margin: 2rem auto; }
+    .indicadores-table td { padding: 0.3rem 0.5rem; }
+    .fatores-bar-container {
+      background: #f6f6fb;
+      border-radius: 12px;
+      margin: 1.5rem 0 1rem 0;
+      padding: 1rem 0.5rem 0.5rem 0.5rem;
+    }
+    .fatores-bar-title {
+      text-align: center;
+      font-size: 1.1rem;
+      color: #6b2498;
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+    }
+    .fatores-bar {
+      display: flex;
+      align-items: flex-end;
+      height: 60px;
+      margin-bottom: 0.5rem;
+      position: relative;
+    }
+    .fator-segment {
+      flex: 1;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      position: relative;
+      height: 100%;
+    }
+    .fator-circle {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      color: #fff;
+      font-weight: bold;
+      font-size: 1rem;
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      box-shadow: 0 2px 8px #0002;
+    }
+    .fator-executor { background: #c1272d; }
+    .fator-comunicador { background: #f9b233; color: #b97a00; }
+    .fator-planejador { background: #009444; }
+    .fator-analista { background: #2e3192; }
+    .fator-label {
+      text-align: center;
+      font-size: 1rem;
+      font-weight: bold;
+      margin-top: 0.2rem;
+    }
+    .fator-executor-label { color: #c1272d; }
+    .fator-comunicador-label { color: #f9b233; }
+    .fator-planejador-label { color: #009444; }
+    .fator-analista-label { color: #2e3192; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div id="resultado-cabecalho"></div>
+    <div id="resultado-perfis"></div>
+    <div id="resultado-indicadores"></div>
+    <div id="resultado-competencias"></div>
+  </div>
+  <script>
+    // Impede voltar para a página anterior
+    history.pushState(null, '', location.href);
+    window.onpopstate = function() {
+      history.go(1);
+    };
+    // Impede refresh para gerar novo resultado
+    if (sessionStorage.getItem('resultado_ja_gerado')) {
+      document.body.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100vh;"><div style="background:#fff3cd;border:1px solid #ffeeba;padding:2rem 2.5rem;border-radius:10px;color:#856404;font-size:1.3rem;text-align:center;max-width:500px;">O resultado já foi exibido nesta sessão.<br>Reinicie o questionário para gerar um novo resultado.</div></div>';
+      throw new Error('Resultado já exibido');
+    } else {
+      sessionStorage.setItem('resultado_ja_gerado', '1');
+    }
+    // Função para obter nome do usuário do localStorage
+    function getNomeUsuario() {
+      return localStorage.getItem('nome') || 'Usuário';
+    }
+    // Função para obter data atual formatada
+    function getDataHoje() {
+      const hoje = new Date();
+      return hoje.toLocaleDateString('pt-BR');
+    }
+    // Geração de dados aleatórios para perfis
+    function gerarPerfis() {
+      let executor = Math.random() * 40 + 20; // 20-60%
+      let comunicador = Math.random() * 30; // 0-30%
+      let planejador = Math.random() * 40 + 10; // 10-50%
+      let analista = 100 - executor - comunicador - planejador;
+      analista = Math.max(0, analista);
+      // Normalizar se passar de 100%
+      const soma = executor + comunicador + planejador + analista;
+      executor = executor / soma * 100;
+      comunicador = comunicador / soma * 100;
+      planejador = planejador / soma * 100;
+      analista = analista / soma * 100;
+      return [
+        { nome: 'Executor', cor: 'perfil-executor', valor: executor },
+        { nome: 'Comunicador', cor: 'perfil-comunicador', valor: comunicador },
+        { nome: 'Planejador', cor: 'perfil-planejador', valor: planejador },
+        { nome: 'Analista', cor: 'perfil-analista', valor: analista },
+      ];
+    }
+    // Geração de indicadores situacionais
+    function gerarIndicadores() {
+      const nomes = [
+        'Energia', 'Exigência do meio', 'Aproveitamento', 'Autoconfiança', 'Autoestima',
+        'Flexibilidade', 'Amplitude', 'Automotivação', 'Incitabilidade'
+      ];
+      const descricoes = ['BAIXA', 'NORMAL BAIXA', 'NORMAL ALTA', 'ALTA', 'MUITO ALTA', 'EXTREMAMENTE ALTA', 'EXTREMAMENTE BAIXO'];
+      return nomes.map(nome => {
+        const valor = Math.random();
+        let desc = descricoes[Math.floor(valor * descricoes.length)];
+        return { nome, valor, desc };
+      });
+    }
+    // Geração de competências
+    function gerarCompetencias() {
+      const nomes = [
+        'Tolerância', 'Planejamento', 'Empatia', 'Capacidade de ouvir', 'Concentração',
+        'Condescendência', 'Perfil Técnico', 'Organização', 'Detalhismo', 'Rigorosidade',
+        'Orientado por resultado', 'Multitarefas', 'Automotivação', 'Proatividade',
+        'Dinamismo', 'Dominância', 'Extroversão', 'Relacionamento interpessoal', 'Sociabilidade', 'Orientado por relacionamento'
+      ];
+      return nomes.map(nome => {
+        return { nome, valor: Math.round(Math.random() * 100) };
+      });
+    }
+    // Função para descrição do perfil
+    function getDescricaoPerfil(valor) {
+      if (valor >= 35) return 'EXTREMAMENTE ALTO';
+      if (valor >= 30) return 'MUITO ALTO';
+      if (valor >= 20) return 'ALTO';
+      if (valor >= 10) return 'NORMAL';
+      if (valor > 0) return 'EXTREMAMENTE BAIXO';
+      return '';
+    }
+    // Geração de fatores positivos/negativos por perfil
+    function gerarFatores(perfis) {
+      // Gera valores entre -20% e +25% para cada perfil
+      return perfis.map(p => {
+        let valor = Math.round((Math.random() * 45 - 20) * 10) / 10; // -20.0 a +25.0
+        // Deixa pelo menos um positivo e um negativo
+        return { nome: p.nome, valor, cor: p.cor };
+      });
+    }
+    // Cabeçalho dinâmico
+    function renderCabecalho(perfis) {
+      const nome = getNomeUsuario();
+      const data = getDataHoje();
+      // Perfis acima de 30%
+      const destaques = perfis.filter(p => p.valor >= 30);
+      // Se nenhum for >= 30%, pega o maior
+      let nomesDestaque = destaques.length > 0 ? destaques : [perfis.reduce((a, b) => a.valor > b.valor ? a : b)];
+      // Ordenar por valor decrescente
+      nomesDestaque = nomesDestaque.sort((a, b) => b.valor - a.valor);
+      const nomes = nomesDestaque.map(p => p.nome).join(' ');
+      const html = `
+        <div style="background:rgba(150, 120, 200, 0.10);padding:14px 18px 14px 18px;margin-bottom:10px;text-align:center;border-radius:8px;max-width:900px;margin-left:auto;margin-right:auto;">
+          Atenção para perfil negativo muito baixo.Dificuldade em definir para si um estilo claro de<br>
+        comportamento. Energia Muito baixa.Niveis de perfil negativo muito baixos. O Resultado pode ser <br>
+          interpretado como um reflexo verdadeiro do candidato no teste. Verificar Perfil positivo menor.
+        </div>
+        <div style="background:#f6f6fb;padding:10px 0;margin-bottom:10px;text-align:center">
+          <div style="color:#6b2498;font-size:1rem;">Neste momento, ${nome.toUpperCase()} está:</div>
+          <div style="color:#6b2498;font-size:2rem;font-weight:bold;">${nomes}</div>
+          <div style="color:#6b2498;font-size:1rem;">em ${data}</div>
+        </div>
+      `;
+      document.getElementById('resultado-cabecalho').innerHTML = html;
+    }
+    // Renderização dos perfis
+    function renderPerfis(perfis) {
+      // Descobrir os 3 maiores percentuais
+      const top3 = [...perfis].sort((a, b) => b.valor - a.valor).slice(0, 3).map(p => p.nome);
+      // Barra colorida com círculos
+      let html = `<div class='perfil-bar'>`;
+      perfis.forEach(p => {
+        html += `<div class='perfil-segment ${p.cor}' style='width:${p.valor}%;'>
+          ${top3.includes(p.nome) ? "<div class='perfil-dot'></div>" : ''}
+        </div>`;
+      });
+      html += `</div>`;
+      // Labels
+      html += `<div class='perfil-labels'>`;
+      perfis.forEach(p => {
+        html += `<div class='perfil-label perfil-${p.nome.toLowerCase()}-label'>
+          <span class='perfil-porcentagem'>${p.valor.toFixed(2)}%</span>
+          ${p.nome}<br>
+          <span class='perfil-desc'>${getDescricaoPerfil(p.valor)}</span>
+        </div>`;
+      });
+      html += `</div>`;
+      document.getElementById('resultado-perfis').innerHTML = html;
+    }
+    // Renderização dos fatores
+    function renderFatores(fatores) {
+      let html = `<div class='fatores-bar-container'>`;
+      html += `<div class='fatores-bar-title'>Essa é a distribuição de fatores <b>positivos ou negativos por perfil.</b></div>`;
+      html += `<div class='fatores-bar'>`;
+      fatores.forEach(f => {
+        // Tamanho do círculo proporcional ao valor absoluto (mínimo 24px, máximo 48px)
+        const abs = Math.abs(f.valor);
+        const size = abs === 0 ? 24 : 24 + (abs / 25) * 24;
+        const sinal = f.valor > 0 ? '+' : '';
+        html += `<div class='fator-segment'>
+          <div class='fator-circle fator-${f.nome.toLowerCase()}' style='width:${size}px;height:${size}px;'>${sinal}${f.valor.toFixed(1)}%</div>
+        </div>`;
+      });
+      html += `</div><div style='display:flex;'>`;
+      fatores.forEach(f => {
+        html += `<div class='fator-label fator-${f.nome.toLowerCase()}-label' style='flex:1;'>${f.valor > 0 ? '+' : ''}${f.valor.toFixed(1)}%</div>`;
+      });
+      html += `</div></div>`;
+      // Inserir após a barra de perfis
+      const perfisDiv = document.getElementById('resultado-perfis');
+      perfisDiv.insertAdjacentHTML('afterend', html);
+    }
+    // Renderização dos indicadores
+    function renderIndicadores(indicadores) {
+      let html = `<h3>Indicadores Situacionais</h3><table class='indicadores-table'>`;
+      indicadores.forEach(i => {
+        html += `<tr><td class='indicador-label'>${i.nome}</td><td style='width:70%'><div class='indicador-bar'><div class='indicador-bar-inner' style='width:${(i.valor*100).toFixed(0)}%'></div></div></td><td>${i.desc}</td></tr>`;
+      });
+      html += `</table>`;
+      document.getElementById('resultado-indicadores').innerHTML = html;
+    }
+    // Renderização das competências
+    function renderCompetencias(competencias) {
+      let html = `<h3>Competências</h3><div class='competencias-list'>`;
+      competencias.forEach(c => {
+        html += `<div class='competencia-item'>${c.nome}: ${c.valor}</div>`;
+      });
+      html += `</div>`;
+      document.getElementById('resultado-competencias').innerHTML = html;
+    }
+    // Gera e exibe tudo
+    const perfis = gerarPerfis();
+    renderCabecalho(perfis);
+    const fatores = gerarFatores(perfis);
+    renderPerfis(perfis);
+    renderFatores(fatores);
+    const indicadores = gerarIndicadores();
+    const competencias = gerarCompetencias();
+    renderIndicadores(indicadores);
+    renderCompetencias(competencias);
+    // Limpa localStorage para evitar reuso dos dados
+    localStorage.clear();
+  </script>
+</body>
+</html> 

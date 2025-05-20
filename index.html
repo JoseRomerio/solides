@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sólides Questionário</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1 class="logo">sólides</h1>
+      <div class="progress">Passo <strong>1 de 3</strong>
+        <div class="bar"></div>
+      </div>
+    </header>
+
+    <p class="instruction">
+      Por favor, preencha suas informações pessoais abaixo.
+    </p>
+    <p class="rules"><strong>Regras:</strong> Responda sozinho, sem ajuda de terceiros. Não interrompa o questionário com distrações ou conversas.</p>
+
+    <form class="personal-info" onsubmit="salvarDadosPessoais(event)">
+      <div class="form-group">
+        <label for="name">Nome:</label>
+        <input type="text" id="name" name="name" required>
+      </div>
+      
+      <div class="form-group">
+        <label for="gender">Sexo  :</label>
+        <select id="gender" name="gender" required>
+          <option value="">Selecione</option>
+          <option value="masculino">Masculino</option>
+          <option value="feminino">Feminino</option>
+          <option value="outro">Outro</option>
+        </select>
+      </div>
+      
+      <div class="form-group">
+        <label for="age">Idade:</label>
+        <input type="number" id="age" name="age" min="1" max="120" required>
+      </div>
+      <div class="navigation-buttons">  
+        <button type="submit" class="next-button">Próximo</button>
+      </div>
+    </form>
+    <script>
+      function salvarDadosPessoais(event) {
+        event.preventDefault();
+        localStorage.setItem('nome', document.getElementById('name').value.trim());
+        localStorage.setItem('sexo', document.getElementById('gender').value);
+        localStorage.setItem('idade', document.getElementById('age').value);
+        window.location.href = 'page2.html';
+      }
+    </script>
+  </div>
+</body>
+</html>

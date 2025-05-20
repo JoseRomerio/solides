@@ -1,0 +1,114 @@
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #f6f6fb;
+    margin: 0;
+    padding: 0;
+    color: #4a2a7c;
+  }
+  
+  .container {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: auto;
+  }
+  
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .logo {
+    font-size: 2rem;
+    color: #932b8e;
+    margin: 0;
+  }
+  
+  .progress {
+    text-align: right;
+    font-weight: bold;
+    color: #932b8e;
+    font-size: 0.9rem;
+    position: relative;
+  }
+  
+  .progress .bar {
+    background-color: #932b8e;
+    height: 6px;
+    width: 100px;
+    margin-top: 5px;
+    border-radius: 10px;
+  }
+  
+  .instruction {
+    font-size: 1.2rem;
+    margin-top: 2rem;
+    color: #4a2a7c;
+  }
+  
+  .instruction .highlight {
+    background-color: #e6c7f1;
+    color: #932b8e;
+    font-weight: bold;
+    padding: 0 4px;
+    border-radius: 4px;
+  }
+  
+  .rules {
+    font-size: 0.95rem;
+    margin-top: 0.5rem;
+  }
+  
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+  
+  button {
+    padding: 12px;
+    background-color: white;
+    border: 2px solid #e6e0f0;
+    border-radius: 10px;
+    cursor: pointer;
+    color: #6b409d;
+    font-weight: 500;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+  }
+  
+  button:hover {
+    border-color: #932b8e;
+  }
+  
+  button.selected {
+    background-color: #e6d7f2;
+    border-color: #d0a5eb;
+    color: #932b8e;
+  }
+  
+  .navigation-buttons {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 2rem;
+  }
+  
+  .next-button, .finish-button {
+    background-color: #6b2498;
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    font-weight: bold;
+    font-size: 1.1rem;
+    padding: 12px 48px;
+    margin-left: 1rem;
+    box-shadow: 0 2px 8px rgba(107,36,152,0.05);
+    transition: background 0.2s, box-shadow 0.2s;
+  }
+  
+  .next-button:hover, .finish-button:hover {
+    background-color: #932b8e;
+    box-shadow: 0 4px 16px rgba(107,36,152,0.12);
+  }
+  

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sólides Questionário</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1 class="logo">sólides</h1>
+      <div class="progress">Passo <strong>2 de 3</strong>
+        <div class="bar"></div>
+      </div>
+    </header>
+
+    <p class="instruction">
+      Agora, marque <span class="highlight">o que melhor te representa</span> (atributos que você tenha ou não).
+    </p>
+    <p class="rules"><strong>Regras:</strong> Responda sozinho, sem ajuda de terceiros. Não interrompa o questionário com distrações ou conversas.</p>
+
+    <div class="grid" id="palavras-grid">
+      <button>Alegre</button>
+      <button>Animado</button>
+      <button>Anti-Social</button>
+      <button>Arrogante</button>
+      <button>Ativo</button>
+      <button>Audacioso (Ousado)</button>
+      <button>Auto-Disciplinado</button>
+      <button>Auto-Suficiente</button>
+      <button>Barulhento</button>
+      <button>Bem-Humorado</button>
+      <button>Bem-Quisto</button>
+      <button>Bom Companheiro</button>
+      <button>Calculista</button>
+      <button>Calmo</button>
+      <button>Compreensivo</button>
+      <button>Comunicativo</button>
+      <button>Conservador</button>
+      <button>Contagiante</button>
+      <button>Corajoso</button>
+      <button>Crítico</button>
+      <button>Cumpridor</button>
+      <button>Decidido</button>
+      <button>Dedicado</button>
+      <button>Depressivo</button>
+      <button>Desconfiado</button>
+      <button>Desmotivado</button>
+      <button>Desorganizado</button>
+      <button>Destacado</button>
+      <button>Discreto</button>
+      <button>Eficiente</button>
+      <button>Egocêntrico</button>  
+      <button>Egoísta</button>
+      <button>Empolgante</button>
+      <button>Enérgico</button>
+      <button>Entusiasta</button>
+      <button>Equilibrado</button>
+      <button>Espalhafatoso</button>
+      <button>Estimulante</button>
+      <button>Exagerado</button>
+      <button>Exigente</button>
+      <button>Extrovertido</button>
+      <button>Exuberante</button>
+      <button>Firme</button>
+      <button>Frio</button>
+      <button>Habilidoso</button>
+      <button>Idealista</button>
+      <button>Impaciente</button>
+      <button>Indeciso</button>
+      <button>Indepedente</button>
+      <button>Indisciplinado</button>
+      <button>Inflexível</button>
+      <button>Influenciador</button>
+      <button>Ingênuo</button>
+      <button>Inseguro</button>
+      <button>Insensível</button>
+      <button>Intolerante</button>
+      <button>Introvertido</button>
+      <button>Leal</button>
+      <button>Líder</button>
+      <button>Medroso</button>
+      <button>Metódico</button>
+      <button>Minuncioso</button>
+      <button>Modesto</button>
+      <button>Orgulhoso</button>
+      <button>Otimista</button>
+      <button>Paciente  </button>
+      <button>Perfeccionista</button>
+      <button>Persistente</button>
+      <button>Pessimista</button>
+      <button>Popular</button>
+      <button>Prático</button>
+      <button>Pretensioso</button>
+      <button>Procastinador</button>
+      <button>Racional</button>
+      <button>Reservado</button>
+      <button>Resoluto(Decidido)</button>
+      <button>Rotineiro</button>
+      <button>Sarcástico</button>
+      <button>Sensível</button>
+      <button>Sentimental</button>
+      <button>Simpático</button>
+      <button>Sincero</button>
+      <button>Temeroso</button>
+      <button>Téorico</button>
+      <button>Tranquilo</button>
+      <button>Vaidoso</button>
+      <button>Vingativo</button>
+      <button>Skatista</button>
+      <button>Trabalhador</button>
+      <button>Tímido</button>
+    </div>
+
+    <div class="navigation-buttons">
+      <button onclick="salvarRespostasPagina2()" class="next-button">Próximo passo</button>
+    </div>
+
+    <script>
+      // Impede acesso direto sem preencher página 1
+      if (!localStorage.getItem('nome') || !localStorage.getItem('sexo') || !localStorage.getItem('idade')) {
+        window.location.href = 'index.html';
+      }
+      // Seleção visual dos botões
+      document.querySelectorAll('#palavras-grid button').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+          e.preventDefault();
+          btn.classList.toggle('selected');
+        });
+      });
+
+      // Salvar respostas no localStorage e ir para próxima página
+      function salvarRespostasPagina2() {
+        const selecionadas = Array.from(document.querySelectorAll('#palavras-grid button.selected')).map(btn => btn.textContent.trim());
+        localStorage.setItem('respostas_pagina2', JSON.stringify(selecionadas));
+        window.location.href = 'page3.html';
+      }
+    </script>
+  </div>
+</body>
+</html> 
